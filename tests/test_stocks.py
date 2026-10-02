@@ -8,9 +8,9 @@ import httpx
 import pytest
 import respx
 
-from intelbit_river_connector_ozon.exceptions import OzonApiError
-from intelbit_river_connector_ozon.models import StockUpdate
-from intelbit_river_connector_ozon.stocks import OzonStocksClient
+from intelbit_floweon_connector_ozon.exceptions import OzonApiError
+from intelbit_floweon_connector_ozon.models import StockUpdate
+from intelbit_floweon_connector_ozon.stocks import OzonStocksClient
 from tests.conftest import BASE_URL, load_mock
 
 STOCKS_PATH = f"{BASE_URL}/v1/product/info/stocks-by-warehouse/fbs"

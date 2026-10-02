@@ -8,8 +8,8 @@ from typing import Any
 
 import pytest
 
-from intelbit_river_connector_ozon.auth import OzonAuth
-from intelbit_river_connector_ozon.rate_limiter import OzonRateLimiter, OzonRateLimiterConfig
+from intelbit_floweon_connector_ozon.auth import OzonAuth
+from intelbit_floweon_connector_ozon.rate_limiter import OzonRateLimiter, OzonRateLimiterConfig
 
 BASE_URL = "https://api-seller.ozon.ru"
 _FIXTURES = Path(__file__).parent / "fixtures" / "ozon-mocks"

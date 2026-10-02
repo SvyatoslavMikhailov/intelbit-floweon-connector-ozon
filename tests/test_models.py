@@ -2,7 +2,7 @@
 
 from decimal import Decimal
 
-from intelbit_river_connector_ozon.models import (
+from intelbit_floweon_connector_ozon.models import (
     FulfillmentType,
     OzonPosting,
     OzonPrice,

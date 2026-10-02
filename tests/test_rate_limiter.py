@@ -6,9 +6,9 @@ import httpx
 import pytest
 import respx
 
-from intelbit_river_connector_ozon.base import OzonHttpClient
-from intelbit_river_connector_ozon.exceptions import OzonRateLimitError
-from intelbit_river_connector_ozon.rate_limiter import (
+from intelbit_floweon_connector_ozon.base import OzonHttpClient
+from intelbit_floweon_connector_ozon.exceptions import OzonRateLimitError
+from intelbit_floweon_connector_ozon.rate_limiter import (
     OzonRateLimiter,
     OzonRateLimiterConfig,
     TokenBucket,

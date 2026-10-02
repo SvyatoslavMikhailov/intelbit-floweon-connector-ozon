@@ -1,14 +1,14 @@
-"""Коннектор Ozon Seller API для Интелбит:Река."""
+"""Коннектор Ozon Seller API для Интелбит.Фловеон."""
 
-from intelbit_river_connector_ozon.auth import OzonAuth
-from intelbit_river_connector_ozon.connector import OzonConnector
-from intelbit_river_connector_ozon.exceptions import (
+from intelbit_floweon_connector_ozon.auth import OzonAuth
+from intelbit_floweon_connector_ozon.connector import OzonConnector
+from intelbit_floweon_connector_ozon.exceptions import (
     OzonApiError,
     OzonError,
     OzonRateLimitError,
     WebhookValidationError,
 )
-from intelbit_river_connector_ozon.models import (
+from intelbit_floweon_connector_ozon.models import (
     FulfillmentType,
     OzonPosting,
     OzonPrice,
@@ -23,9 +23,9 @@ from intelbit_river_connector_ozon.models import (
     UpdatePricesResult,
     UpdateStocksResult,
 )
-from intelbit_river_connector_ozon.orders import OzonOrdersClient
-from intelbit_river_connector_ozon.prices import OzonPricesClient
-from intelbit_river_connector_ozon.product_models import (
+from intelbit_floweon_connector_ozon.orders import OzonOrdersClient
+from intelbit_floweon_connector_ozon.prices import OzonPricesClient
+from intelbit_floweon_connector_ozon.product_models import (
     AttributesPage,
     OzonImage,
     OzonProductAttribute,
@@ -34,14 +34,14 @@ from intelbit_river_connector_ozon.product_models import (
     ProductListItem,
     ProductListPage,
 )
-from intelbit_river_connector_ozon.products import OzonProductsClient
-from intelbit_river_connector_ozon.rate_limiter import (
+from intelbit_floweon_connector_ozon.products import OzonProductsClient
+from intelbit_floweon_connector_ozon.rate_limiter import (
     OzonRateLimiter,
     OzonRateLimiterConfig,
     TokenBucket,
 )
-from intelbit_river_connector_ozon.stocks import OzonStocksClient
-from intelbit_river_connector_ozon.webhooks import OzonWebhookReceiver
+from intelbit_floweon_connector_ozon.stocks import OzonStocksClient
+from intelbit_floweon_connector_ozon.webhooks import OzonWebhookReceiver
 
 __version__ = "0.3.0"
 

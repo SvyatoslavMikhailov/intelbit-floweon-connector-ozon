@@ -7,8 +7,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from intelbit_river_connector_ozon.base import OzonHttpClient
-from intelbit_river_connector_ozon.product_models import (
+from intelbit_floweon_connector_ozon.base import OzonHttpClient
+from intelbit_floweon_connector_ozon.product_models import (
     AttributesPage,
     OzonAttributeValue,
     OzonImage,

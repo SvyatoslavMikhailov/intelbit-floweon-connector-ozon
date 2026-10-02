@@ -18,7 +18,7 @@ from _vitrina_client import VitrinaBusClient
 from enrich_vitrina import build_parser, run_enrichment
 from fastapi import FastAPI, Request
 
-from intelbit_river_connector_ozon.connector import OzonConnector
+from intelbit_floweon_connector_ozon.connector import OzonConnector
 
 OZON = "https://api-seller.ozon.ru"
 BITRIX = "http://bitrix/rest/0/test-token"

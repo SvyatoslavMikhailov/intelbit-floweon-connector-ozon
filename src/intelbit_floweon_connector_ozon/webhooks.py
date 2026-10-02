@@ -7,8 +7,8 @@ from typing import Any
 
 from pydantic import TypeAdapter, ValidationError
 
-from intelbit_river_connector_ozon.exceptions import WebhookValidationError
-from intelbit_river_connector_ozon.models import OzonWebhookEvent, PingEvent
+from intelbit_floweon_connector_ozon.exceptions import WebhookValidationError
+from intelbit_floweon_connector_ozon.models import OzonWebhookEvent, PingEvent
 
 # Типы событий Ozon (MVP по докам).
 TYPE_NEW_POSTING = "TYPE_NEW_POSTING"

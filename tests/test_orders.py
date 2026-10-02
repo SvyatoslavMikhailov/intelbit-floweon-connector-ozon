@@ -9,9 +9,9 @@ import httpx
 import pytest
 import respx
 
-from intelbit_river_connector_ozon.exceptions import OzonApiError
-from intelbit_river_connector_ozon.orders import OzonOrdersClient
-from intelbit_river_connector_ozon.rate_limiter import OzonRateLimiter
+from intelbit_floweon_connector_ozon.exceptions import OzonApiError
+from intelbit_floweon_connector_ozon.orders import OzonOrdersClient
+from intelbit_floweon_connector_ozon.rate_limiter import OzonRateLimiter
 from tests.conftest import BASE_URL, load_mock
 
 SINCE = datetime(2026, 5, 1, tzinfo=UTC)

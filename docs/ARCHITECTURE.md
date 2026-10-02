@@ -21,9 +21,9 @@
 ## Целевой сценарий MVP: Ozon FBS ↔ 1С УТ 11.5
 
 ```
-Ozon → webhook (новый заказ) → Река (workflow-engine) → 1С (OneCConnector) → резерв склада
-1С → остатки изменились → Река → Ozon (OzonConnector.update_stocks)
-1С → цены изменились → Река → Ozon (OzonConnector.update_prices)
+Ozon → webhook (новый заказ) → Фловеон (workflow-engine) → 1С (OneCConnector) → резерв склада
+1С → остатки изменились → Фловеон → Ozon (OzonConnector.update_stocks)
+1С → цены изменились → Фловеон → Ozon (OzonConnector.update_prices)
 ```
 
 ## Rate Limits Ozon API
@@ -32,6 +32,6 @@ Ozon → webhook (новый заказ) → Река (workflow-engine) → 1С 
 - Импорт цен/остатков: пакетные (до 1000 позиций за вызов)
 - Детали: [docs/OZON_API_QUIRKS.md](OZON_API_QUIRKS.md)
 
-## Подключение river-sdk
+## Подключение floweon-sdk
 
-Этот коннектор пока не зависит от `river-sdk`. При будущей привязке использовать **публичный git-тег** `intelbit-river-sdk @ vX.Y.Z` (репозиторий `SvyatoslavMikhailov/intelbit-river-sdk`), **не** path в приватный `intelbit-river-monorepo`.
+Этот коннектор пока не зависит от `floweon-sdk`. При будущей привязке использовать **публичный git-тег** `intelbit-floweon-sdk @ vX.Y.Z` (репозиторий `SvyatoslavMikhailov/intelbit-floweon-sdk`), **не** path в приватный `intelbit-floweon-monorepo`.

@@ -7,8 +7,8 @@ import json
 import fakeredis.aioredis
 import pytest
 
-from intelbit_river_connector_ozon.exceptions import WebhookValidationError
-from intelbit_river_connector_ozon.models import (
+from intelbit_floweon_connector_ozon.exceptions import WebhookValidationError
+from intelbit_floweon_connector_ozon.models import (
     ChatClosedEvent,
     ChatMessageEvent,
     CutoffDateChangedEvent,
@@ -18,7 +18,7 @@ from intelbit_river_connector_ozon.models import (
     PostingCancelledEvent,
     StateChangedEvent,
 )
-from intelbit_river_connector_ozon.webhooks import OzonWebhookReceiver
+from intelbit_floweon_connector_ozon.webhooks import OzonWebhookReceiver
 from tests.conftest import load_mock
 
 ALL_TYPES = [

@@ -38,7 +38,7 @@ Workflow `catalog-publish` пресета синхронизирует базо�
 Если он трогает `DETAIL_TEXT` / `DETAIL_PICTURE` / `MORE_PHOTO` / `OZON_*` — наше
 обогащение затрётся на следующей синхронизации. Перед первым `--apply` проверь
 mapping `packages/presets/onec-vitrina-pilot/mappings/product-to-listing.yaml`
-в `intelbit-river-monorepo`:
+в `intelbit-floweon-monorepo`:
 
 1. Убрать эти поля из mapping (рекомендуется, если 1С их не наполняет), **или**
 2. Временно отключить workflow `catalog-publish` на время пилотного показа, **или**

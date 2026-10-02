@@ -4,7 +4,7 @@
 
 connectors:
   ozon:
-    plugin: intelbit-river-connector-ozon
+    plugin: intelbit-floweon-connector-ozon
     version: ">=0.1.0"
     config:
       client_id: "${secrets.OZON_CLIENT_ID}"
@@ -13,7 +13,7 @@ connectors:
       webhook_secret: "${secrets.OZON_WEBHOOK_SECRET}"
 
   onec:
-    plugin: intelbit-river-connector-onec
+    plugin: intelbit-floweon-connector-onec
     version: ">=0.1.0"
     config:
       base_url: "${secrets.ONEC_URL}"

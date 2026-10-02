@@ -6,7 +6,7 @@ import fakeredis.aioredis
 import httpx
 import pytest
 
-from intelbit_river_connector_ozon.connector import OzonConnector
+from intelbit_floweon_connector_ozon.connector import OzonConnector
 from tests.mock_ozon_server.main import create_app
 
 MOCK_BASE_URL = "http://mock-ozon"

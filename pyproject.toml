@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "intelbit-river-connector-ozon"
+name = "intelbit-floweon-connector-ozon"
 version = "0.3.0"
-description = "Коннектор Ozon Seller API для Интелбит:Река"
+description = "Коннектор Ozon Seller API для Интелбит.Фловеон"
 authors = [{ name = "Святослав Михайлов", email = "vceo@intelbit.ru" }]
 readme = "README.md"
 requires-python = ">=3.12"
@@ -30,8 +30,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/SvyatoslavMikhailov/intelbit-river-connector-ozon"
-Repository = "https://github.com/SvyatoslavMikhailov/intelbit-river-connector-ozon"
+Homepage = "https://github.com/SvyatoslavMikhailov/intelbit-floweon-connector-ozon"
+Repository = "https://github.com/SvyatoslavMikhailov/intelbit-floweon-connector-ozon"
 
 [tool.ruff]
 line-length = 100

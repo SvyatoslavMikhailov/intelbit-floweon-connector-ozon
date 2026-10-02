@@ -8,10 +8,10 @@ import httpx
 import pytest
 import respx
 
-from intelbit_river_connector_ozon.base import OzonHttpClient
-from intelbit_river_connector_ozon.connector import OzonConnector
-from intelbit_river_connector_ozon.exceptions import OzonApiError
-from intelbit_river_connector_ozon.products import OzonProductsClient
+from intelbit_floweon_connector_ozon.base import OzonHttpClient
+from intelbit_floweon_connector_ozon.connector import OzonConnector
+from intelbit_floweon_connector_ozon.exceptions import OzonApiError
+from intelbit_floweon_connector_ozon.products import OzonProductsClient
 from tests.conftest import BASE_URL, load_mock
 
 LIST_PATH = f"{BASE_URL}/v2/product/list"

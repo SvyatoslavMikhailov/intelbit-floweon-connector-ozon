@@ -1,20 +1,20 @@
-# CLAUDE.md — intelbit-river-connector-ozon
+# CLAUDE.md — intelbit-floweon-connector-ozon
 
 ## Контекст
 
-Публичный коннектор Ozon Seller API для Интелбит:Река.
+Публичный коннектор Ozon Seller API для Интелбит.Фловеон.
 Целевой сценарий: маркетплейс↔1С (FBS-заказы, остатки, цены, вебхуки).
-Паспорт проекта в Obsidian: `4-17 Интелбит Река/`.
+Паспорт проекта в Obsidian: `4-17 Интелбит Фловеон/`.
 
 ## Связь с monorepo
 
-`intelbit-river-sdk` — в `~/Developer/intelbit-river-monorepo/packages/sdk/`.
-Импортируем как path-dependency в pyproject.toml.
+`intelbit-floweon-sdk` — публичный репозиторий `intelbit-floweon-sdk` (git-тег `v0.2.0`).
+Пока коннектор от SDK не зависит (миграция на `ConnectorPlugin` — отдельный промпт).
 
 ## Workflow
 
-Промпты — в Obsidian `4-17 Интелбит Река/04 Промпты для Claude Code/`.
-После работы — статус в `Статус разработки.md`.
+Промпты — в Obsidian `4-17 Интелбит Фловеон/04 Промпты для Claude Code/`.
+После работы — статус в `4-17 Интелбит Фловеон/04 Промпты для Claude Code/Статус разработки.md`.
 
 **Не push'у автоматически** — жду команды «push» от Свята.
 

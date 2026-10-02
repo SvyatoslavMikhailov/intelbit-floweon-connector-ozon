@@ -9,7 +9,7 @@ import json
 
 import pytest
 
-from intelbit_river_connector_ozon.connector import OzonConnector
+from intelbit_floweon_connector_ozon.connector import OzonConnector
 
 pytestmark = pytest.mark.contract
 

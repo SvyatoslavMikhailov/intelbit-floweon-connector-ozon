@@ -9,7 +9,7 @@ import httpx
 import pytest
 import respx
 
-from intelbit_river_connector_ozon.connector import OzonConnector
+from intelbit_floweon_connector_ozon.connector import OzonConnector
 from tests.conftest import BASE_URL, load_mock
 
 
@@ -92,7 +92,7 @@ async def test_health_check(connector: OzonConnector) -> None:
 
 class TestOzonAuth:
     def test_headers(self) -> None:
-        from intelbit_river_connector_ozon.auth import OzonAuth
+        from intelbit_floweon_connector_ozon.auth import OzonAuth
 
         auth = OzonAuth(client_id="12345", api_key="secret-key")
         headers = auth.headers()

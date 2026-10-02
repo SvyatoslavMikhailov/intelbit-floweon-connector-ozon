@@ -1,6 +1,6 @@
-# intelbit-river-connector-ozon
+# intelbit-floweon-connector-ozon
 
-Коннектор Ozon Seller API для **Интелбит:Река** — открытой интеграционной шины данных для торговых компаний.
+Коннектор Ozon Seller API для **Интелбит.Фловеон** — открытой интеграционной шины данных для торговых компаний.
 
 ## Что умеет (v0.0.1 — скелет)
 
@@ -8,7 +8,7 @@
 - Skeleton `OzonConnector` по контракту ADR-006 (Plugin API)
 - Заглушки Orders / Stocks / Prices / Webhooks — реализация в фазе 4 MVP
 
-## Что будет в v0.1.0 (Q2 2027, MVP Реки)
+## Что будет в v0.1.0 (Q2 2027, MVP Фловеона)
 
 - Чтение заказов FBS через `POST /v3/posting/fbs/list`
 - Push остатков `POST /v1/product/info/stocks-by-warehouse/fbs`
@@ -18,19 +18,19 @@
 
 ## Целевой сценарий
 
-Маркетплейс↔1С: заказы из Ozon синхронизируются с 1С УТ 11.5 / КА 2.5 через Реку.
+Маркетплейс↔1С: заказы из Ozon синхронизируются с 1С УТ 11.5 / КА 2.5 через Фловеон.
 Первый пилотный клиент — Cyberflot (Care Friend, Fidelica).
 
 ## Установка
 
 ```bash
-pip install intelbit-river-connector-ozon
+pip install intelbit-floweon-connector-ozon
 ```
 
 ## Быстрый старт
 
 ```python
-from intelbit_river_connector_ozon import OzonConnector
+from intelbit_floweon_connector_ozon import OzonConnector
 
 connector = OzonConnector(config={
     "client_id": "12345",
@@ -45,6 +45,6 @@ connector = OzonConnector(config={
 
 ## Связанные проекты
 
-- **Интелбит:Река** — главный продукт, использующий этот коннектор
-- [intelbit-river-monorepo](https://github.com/SvyatoslavMikhailov/intelbit-river-monorepo) — monorepo ядра Реки
-- [intelbit-river-connector-onec](https://github.com/SvyatoslavMikhailov/intelbit-river-connector-onec) — коннектор 1С
+- **Интелбит.Фловеон** — главный продукт, использующий этот коннектор
+- [intelbit-floweon-monorepo](https://github.com/SvyatoslavMikhailov/intelbit-floweon-monorepo) — monorepo ядра Фловеона
+- [intelbit-floweon-connector-onec](https://github.com/SvyatoslavMikhailov/intelbit-floweon-connector-onec) — коннектор 1С

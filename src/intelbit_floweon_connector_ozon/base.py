@@ -7,9 +7,9 @@ from typing import Any
 
 import httpx
 
-from intelbit_river_connector_ozon.auth import OzonAuth
-from intelbit_river_connector_ozon.exceptions import OzonApiError, OzonRateLimitError
-from intelbit_river_connector_ozon.rate_limiter import OzonRateLimiter
+from intelbit_floweon_connector_ozon.auth import OzonAuth
+from intelbit_floweon_connector_ozon.exceptions import OzonApiError, OzonRateLimitError
+from intelbit_floweon_connector_ozon.rate_limiter import OzonRateLimiter
 
 
 class OzonHttpClient:

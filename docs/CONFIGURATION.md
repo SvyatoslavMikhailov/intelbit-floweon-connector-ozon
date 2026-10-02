@@ -20,7 +20,7 @@
 ```yaml
 connectors:
   ozon:
-    plugin: intelbit-river-connector-ozon
+    plugin: intelbit-floweon-connector-ozon
     version: ">=0.1.0"
     config:
       client_id: "${secrets.OZON_CLIENT_ID}"

@@ -6,7 +6,7 @@ v0.0.1 — skeleton. Методы поднимают NotImplementedError.
 
 import asyncio
 
-from intelbit_river_connector_ozon import OzonConnector
+from intelbit_floweon_connector_ozon import OzonConnector
 
 
 async def main() -> None:

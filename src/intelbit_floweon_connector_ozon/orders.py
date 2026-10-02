@@ -5,8 +5,8 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
-from intelbit_river_connector_ozon.base import OzonHttpClient
-from intelbit_river_connector_ozon.models import OzonPosting, PostingProduct, PostingsList
+from intelbit_floweon_connector_ozon.base import OzonHttpClient
+from intelbit_floweon_connector_ozon.models import OzonPosting, PostingProduct, PostingsList
 
 
 def _iso(dt: datetime) -> str:

@@ -1,4 +1,4 @@
-"""OzonConnector — коннектор Ozon Seller API для Интелбит:Река (ADR-006).
+"""OzonConnector — коннектор Ozon Seller API для Интелбит.Фловеон (ADR-006).
 
 Реальная композиция Orders/Stocks/Prices/Webhooks поверх общего auth +
 rate_limiter. Методы idempotent: read-only (list_orders) — естественно;
@@ -11,15 +11,15 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
-from intelbit_river_connector_ozon.auth import OzonAuth
-from intelbit_river_connector_ozon.base import OzonHttpClient
-from intelbit_river_connector_ozon.models import PingEvent, PriceUpdate, StockUpdate
-from intelbit_river_connector_ozon.orders import OzonOrdersClient
-from intelbit_river_connector_ozon.prices import OzonPricesClient
-from intelbit_river_connector_ozon.products import OzonProductsClient
-from intelbit_river_connector_ozon.rate_limiter import OzonRateLimiter, OzonRateLimiterConfig
-from intelbit_river_connector_ozon.stocks import OzonStocksClient
-from intelbit_river_connector_ozon.webhooks import OzonWebhookReceiver
+from intelbit_floweon_connector_ozon.auth import OzonAuth
+from intelbit_floweon_connector_ozon.base import OzonHttpClient
+from intelbit_floweon_connector_ozon.models import PingEvent, PriceUpdate, StockUpdate
+from intelbit_floweon_connector_ozon.orders import OzonOrdersClient
+from intelbit_floweon_connector_ozon.prices import OzonPricesClient
+from intelbit_floweon_connector_ozon.products import OzonProductsClient
+from intelbit_floweon_connector_ozon.rate_limiter import OzonRateLimiter, OzonRateLimiterConfig
+from intelbit_floweon_connector_ozon.stocks import OzonStocksClient
+from intelbit_floweon_connector_ozon.webhooks import OzonWebhookReceiver
 
 
 class OzonConnector:

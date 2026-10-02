@@ -22,7 +22,7 @@ from typing import Any
 import httpx
 from _vitrina_client import VitrinaBusClient
 
-from intelbit_river_connector_ozon.connector import OzonConnector
+from intelbit_floweon_connector_ozon.connector import OzonConnector
 
 logger = logging.getLogger("enrich_vitrina")
 
