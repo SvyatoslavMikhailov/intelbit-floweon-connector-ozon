@@ -199,9 +199,7 @@ async def test_apply(tmp_path: Path) -> None:
     updated_ids = {str(c["id"]) for c in calls["update"]}
     assert updated_ids == {"101", "102"}
     # A1 имеет бренд → характеристика OZON_BREND (property26) ушла в update
-    assert any(
-        any(k.startswith("fields[property26]") for k in c) for c in calls["update"]
-    )
+    assert any(any(k.startswith("fields[property26]") for k in c) for c in calls["update"])
 
 
 @pytest.mark.parametrize(

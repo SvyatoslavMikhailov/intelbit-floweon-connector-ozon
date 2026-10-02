@@ -146,9 +146,7 @@ class VitrinaBusClient:
                 },
             )
             items = (
-                result.get("productProperties", [])
-                if isinstance(result, dict)
-                else (result or [])
+                result.get("productProperties", []) if isinstance(result, dict) else (result or [])
             )
             self._prop_ids = {
                 p["code"]: int(p["id"])
