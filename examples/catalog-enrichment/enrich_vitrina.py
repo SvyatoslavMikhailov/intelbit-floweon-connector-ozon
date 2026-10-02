@@ -319,6 +319,8 @@ def build_ozon_connector(args: argparse.Namespace) -> OzonConnector:
             "client_id": args.ozon_client_id,
             "api_key": args.ozon_api_key,
             "base_url": args.ozon_base_url,
+            # ETL только читает каталог — приём вебхуков выключен (иначе нужен секрет).
+            "webhook": {"enabled": False},
         }
     )
 

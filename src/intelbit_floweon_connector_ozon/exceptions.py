@@ -3,6 +3,13 @@
 from __future__ import annotations
 
 
+class ConfigurationError(ValueError):
+    """Конфигурация коннектора неполна или небезопасна (fail-closed на инициализации).
+
+    Сообщение содержит только имена ключей конфигурации — никогда их значения.
+    """
+
+
 class OzonError(RuntimeError):
     """Базовая ошибка коннектора Ozon."""
 

@@ -159,6 +159,7 @@ async def test_connector_product_methods(auth) -> None:
             "api_key": "test-api-key",
             "base_url": BASE_URL,
             "rate_limits": {"default_rps": 1000.0, "per_second": {}},
+            "webhook": {"enabled": False},  # тест каталога, приём вебхуков не нужен
         }
     )
     respx.post(LIST_PATH).mock(

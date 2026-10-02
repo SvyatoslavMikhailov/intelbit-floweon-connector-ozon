@@ -46,6 +46,8 @@ class OzonConnector:
         self.products = OzonProductsClient(
             OzonHttpClient(self._auth, base_url, rate_limiter, transport)
         )
+        # Fail-closed: без webhook.secret (при webhook.enabled, default true) —
+        # ConfigurationError здесь, на инициализации.
         self.webhooks = OzonWebhookReceiver(config.get("webhook"))
         self._redis_client = config.get("redis_client")
 
@@ -73,9 +75,15 @@ class OzonConnector:
         result = await self.prices.update_prices(parsed)
         return result.model_dump(mode="json")
 
-    async def on_webhook(self, headers: dict[str, str], body: bytes) -> dict[str, Any]:
-        """Обработать входящий webhook: валидация → парсинг → PING/событие."""
-        self.webhooks.verify_request(headers, body)
+    async def on_webhook(
+        self, headers: dict[str, str], body: bytes, peer_ip: str | None = None
+    ) -> dict[str, Any]:
+        """Обработать входящий webhook: валидация → парсинг → PING/событие.
+
+        peer_ip — адрес TCP-собеседника (из HTTP-сервера, например
+        ``request.client.host``); нужен для IP-allowlist и ``trusted_proxies``.
+        """
+        self.webhooks.verify_request(headers, body, peer_ip=peer_ip)
         event = self.webhooks.parse_event(body)
         if isinstance(event, PingEvent):
             return self.webhooks.respond_ping(event)

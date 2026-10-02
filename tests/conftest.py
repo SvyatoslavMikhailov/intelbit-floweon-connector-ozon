@@ -12,6 +12,8 @@ from intelbit_floweon_connector_ozon.auth import OzonAuth
 from intelbit_floweon_connector_ozon.rate_limiter import OzonRateLimiter, OzonRateLimiterConfig
 
 BASE_URL = "https://api-seller.ozon.ru"
+# Явный тестовый секрет вебхуков: коннектор fail-closed и без секрета не стартует.
+TEST_WEBHOOK_SECRET = "test-ozon-webhook-secret-0001"
 _FIXTURES = Path(__file__).parent / "fixtures" / "ozon-mocks"
 
 
@@ -29,3 +31,14 @@ def auth() -> OzonAuth:
 def fast_rate_limiter() -> OzonRateLimiter:
     """Высокие лимиты — чтобы rate limiting не тормозил unit-тесты клиентов."""
     return OzonRateLimiter(OzonRateLimiterConfig(default_rps=1000.0, per_second={}))
+
+
+@pytest.fixture
+def webhook_config() -> dict[str, Any]:
+    """Минимальная валидная секция webhook (секрет обязателен)."""
+    return {"secret": TEST_WEBHOOK_SECRET}
+
+
+def signed_body(payload: dict[str, Any]) -> bytes:
+    """JSON-тело webhook с корректным secret_key (Ozon кладёт секрет в тело)."""
+    return json.dumps({**payload, "secret_key": TEST_WEBHOOK_SECRET}).encode()

@@ -2,15 +2,14 @@
 
 from __future__ import annotations
 
-import json
-
 import fakeredis.aioredis
 import httpx
 import pytest
 import respx
 
 from intelbit_floweon_connector_ozon.connector import OzonConnector
-from tests.conftest import BASE_URL, load_mock
+from intelbit_floweon_connector_ozon.exceptions import ConfigurationError, WebhookValidationError
+from tests.conftest import BASE_URL, TEST_WEBHOOK_SECRET, load_mock, signed_body
 
 
 @pytest.fixture
@@ -21,6 +20,7 @@ def connector() -> OzonConnector:
             "api_key": "test-api-key",
             "base_url": BASE_URL,
             "rate_limits": {"default_rps": 1000.0, "per_second": {}},
+            "webhook": {"secret": TEST_WEBHOOK_SECRET},
         }
     )
 
@@ -59,13 +59,13 @@ async def test_update_prices_via_connector(connector: OzonConnector) -> None:
 
 
 async def test_on_webhook_ping_handled(connector: OzonConnector) -> None:
-    body = json.dumps(load_mock("webhooks/ping.json")).encode()
+    body = signed_body(load_mock("webhooks/ping.json"))
     result = await connector.on_webhook({}, body)
     assert result == {"result": True}
 
 
 async def test_on_webhook_new_posting_parsed(connector: OzonConnector) -> None:
-    body = json.dumps(load_mock("webhooks/new_posting.json")).encode()
+    body = signed_body(load_mock("webhooks/new_posting.json"))
     result = await connector.on_webhook({}, body)
     assert result["message_type"] == "TYPE_NEW_POSTING"
     assert result["posting_number"] == "12345678-0001-1"
@@ -77,9 +77,10 @@ async def test_on_webhook_dedup_with_redis() -> None:
             "client_id": "1",
             "api_key": "k",
             "redis_client": fakeredis.aioredis.FakeRedis(),
+            "webhook": {"secret": TEST_WEBHOOK_SECRET},
         }
     )
-    body = json.dumps(load_mock("webhooks/new_posting.json")).encode()
+    body = signed_body(load_mock("webhooks/new_posting.json"))
     first = await connector.on_webhook({}, body)
     second = await connector.on_webhook({}, body)
     assert first["duplicate"] is False
@@ -99,3 +100,38 @@ class TestOzonAuth:
         assert headers["Client-Id"] == "12345"
         assert headers["Api-Key"] == "secret-key"
         assert headers["Content-Type"] == "application/json"
+
+
+def test_connector_without_webhook_secret_raises() -> None:
+    """Fail-closed: приём вебхуков включён по умолчанию, без секрета коннектор не стартует."""
+    with pytest.raises(ConfigurationError, match=r"webhook\.secret"):
+        OzonConnector(config={"client_id": "1", "api_key": "k"})
+
+
+def test_connector_webhooks_disabled_starts_without_secret() -> None:
+    connector = OzonConnector(
+        config={"client_id": "1", "api_key": "k", "webhook": {"enabled": False}}
+    )
+    assert connector.webhooks.enabled is False
+
+
+async def test_on_webhook_disabled_rejects() -> None:
+    connector = OzonConnector(
+        config={"client_id": "1", "api_key": "k", "webhook": {"enabled": False}}
+    )
+    with pytest.raises(WebhookValidationError):
+        await connector.on_webhook({}, signed_body(load_mock("webhooks/ping.json")))
+
+
+async def test_on_webhook_passes_peer_ip_to_allowlist() -> None:
+    connector = OzonConnector(
+        config={
+            "client_id": "1",
+            "api_key": "k",
+            "webhook": {"secret": TEST_WEBHOOK_SECRET, "allowed_ips": ["1.2.3.4"]},
+        }
+    )
+    body = signed_body(load_mock("webhooks/ping.json"))
+    assert await connector.on_webhook({}, body, peer_ip="1.2.3.4") == {"result": True}
+    with pytest.raises(WebhookValidationError):
+        await connector.on_webhook({}, body, peer_ip="9.9.9.9")

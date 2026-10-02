@@ -3,6 +3,7 @@
 from intelbit_floweon_connector_ozon.auth import OzonAuth
 from intelbit_floweon_connector_ozon.connector import OzonConnector
 from intelbit_floweon_connector_ozon.exceptions import (
+    ConfigurationError,
     OzonApiError,
     OzonError,
     OzonRateLimitError,
@@ -47,6 +48,7 @@ __version__ = "0.3.0"
 
 __all__ = [
     "AttributesPage",
+    "ConfigurationError",
     "FulfillmentType",
     "OzonApiError",
     "OzonAuth",

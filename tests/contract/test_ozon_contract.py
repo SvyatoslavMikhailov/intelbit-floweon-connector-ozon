@@ -10,6 +10,7 @@ import json
 import pytest
 
 from intelbit_floweon_connector_ozon.connector import OzonConnector
+from tests.conftest import TEST_WEBHOOK_SECRET
 
 pytestmark = pytest.mark.contract
 
@@ -54,6 +55,7 @@ async def test_webhook_new_posting_with_dedup(connector: OzonConnector) -> None:
             "posting_number": "12345678-0001-1",
             "warehouse_id": 22222,
             "products": [{"sku": 123451, "quantity": 1}],
+            "secret_key": TEST_WEBHOOK_SECRET,
         }
     ).encode()
 

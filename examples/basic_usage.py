@@ -15,6 +15,8 @@ async def main() -> None:
             "client_id": "12345",
             "api_key": "your-api-key",
             "rate_limit_rpm": 60,
+            # Fail-closed: при включённом приёме вебхуков секрет обязателен.
+            "webhook": {"secret": "your-webhook-secret"},
         }
     )
 

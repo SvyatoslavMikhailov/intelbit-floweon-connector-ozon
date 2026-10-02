@@ -149,6 +149,7 @@ def _build(transport: httpx.ASGITransport) -> tuple[OzonConnector, VitrinaBusCli
             "api_key": "y",
             "base_url": OZON,
             "rate_limits": {"default_rps": 1000.0, "per_second": {}},
+            "webhook": {"enabled": False},
         }
     )
     vitrina = VitrinaBusClient(BITRIX, iblock_id=5, storage_id=7, _transport=transport)
