@@ -9,13 +9,14 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 from typing import Any
+from urllib.parse import parse_qsl
 
 import httpx
 import pytest
 import respx
 from _vitrina_client import VitrinaBusClient
 from enrich_vitrina import build_parser, run_enrichment
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
 from intelbit_river_connector_ozon.connector import OzonConnector
 
@@ -71,35 +72,50 @@ _OZON_ATTRS = {
 
 
 def _make_bitrix_app() -> tuple[FastAPI, dict[str, list[Any]]]:
+    """Мок БУС: scope `catalog`, тело form-urlencoded (как реальный webhook)."""
     app = FastAPI()
-    calls: dict[str, list[Any]] = {"update": [], "property_set": [], "upload": []}
+    calls: dict[str, list[Any]] = {"update": [], "upload": []}
 
-    @app.post("/rest/0/test-token/iblock.element.get.json")
-    async def element_get(body: dict[str, Any]) -> dict[str, Any]:
-        if body.get("start", 0) > 0:
-            return {"result": []}
+    async def _form(request: Request) -> dict[str, str]:
+        # form-urlencoded без python-multipart: парсим тело сами
+        return dict(parse_qsl((await request.body()).decode("utf-8")))
+
+    @app.post("/rest/0/test-token/catalog.product.list.json")
+    async def product_list(request: Request) -> dict[str, Any]:
+        form = await _form(request)
+        if int(form.get("start", "0") or "0") > 0:
+            return {"result": {"products": []}}
         return {
-            "result": [
-                {"ID": 101, "NAME": "Товар 1", "XML_ID": "A1", "CODE": "a1"},
-                {"ID": 102, "NAME": "Товар 2", "XML_ID": "A2", "CODE": "a2"},
-                {"ID": 103, "NAME": "Прочее", "XML_ID": "OTHER", "CODE": "other"},
-            ]
+            "result": {
+                "products": [
+                    {"id": 101, "iblockId": 5, "name": "Товар 1", "xmlId": "A1", "code": "a1"},
+                    {"id": 102, "iblockId": 5, "name": "Товар 2", "xmlId": "A2", "code": "a2"},
+                    {"id": 103, "iblockId": 5, "name": "Прочее", "xmlId": "OTHER", "code": "o"},
+                ]
+            }
         }
 
-    @app.post("/rest/0/test-token/disk.folder.uploadfile.json")
-    async def uploadfile(body: dict[str, Any]) -> dict[str, Any]:
-        calls["upload"].append(body)
-        return {"result": {"ID": 9000 + len(calls["upload"])}}
+    @app.post("/rest/0/test-token/catalog.productProperty.list.json")
+    async def property_list(request: Request) -> dict[str, Any]:
+        return {
+            "result": {
+                "productProperties": [
+                    {"id": 25, "code": "MORE_PHOTO", "iblockId": 5},
+                    {"id": 26, "code": "OZON_BREND", "iblockId": 5},
+                ]
+            }
+        }
 
-    @app.post("/rest/0/test-token/iblock.element.update.json")
-    async def element_update(body: dict[str, Any]) -> dict[str, Any]:
-        calls["update"].append(body)
-        return {"result": True}
+    @app.post("/rest/0/test-token/catalog.productImage.add.json")
+    async def image_add(request: Request) -> dict[str, Any]:
+        calls["upload"].append(await _form(request))
+        return {"result": {"productImage": {"id": 9000 + len(calls["upload"])}}}
 
-    @app.post("/rest/0/test-token/iblock.element.property.set.json")
-    async def property_set(body: dict[str, Any]) -> dict[str, Any]:
-        calls["property_set"].append(body)
-        return {"result": True}
+    @app.post("/rest/0/test-token/catalog.product.update.json")
+    async def product_update(request: Request) -> dict[str, Any]:
+        form = await _form(request)
+        calls["update"].append(form)
+        return {"result": {"element": {"id": form.get("id")}}}
 
     return app, calls
 
@@ -161,7 +177,7 @@ async def test_dry_run(tmp_path: Path) -> None:
     assert len(_read_csv(tmp_path / "errors.csv")) == 0
     # dry-run в БУС не пишет
     assert calls["update"] == []
-    assert calls["property_set"] == []
+    assert calls["upload"] == []
 
 
 @respx.mock
@@ -176,14 +192,16 @@ async def test_apply(tmp_path: Path) -> None:
         await vitrina.aclose()
 
     assert counts == {"matched": 2, "skipped": 1, "errors": 0}
-    # A1 (2 картинки) + A2 (1 картинка) → 3 upload
+    # A1 (2 картинки) + A2 (1 картинка) → 3 catalog.productImage.add
     assert len(calls["upload"]) == 3
-    # update вызван для обоих matched
+    # catalog.product.update вызван для обоих matched
     assert len(calls["update"]) == 2
-    # property.set: A1 имеет галерею + бренд; хотя бы один вызов
-    assert len(calls["property_set"]) >= 1
-    updated_ids = {c["ELEMENT_ID"] for c in calls["update"]}
-    assert updated_ids == {101, 102}
+    updated_ids = {str(c["id"]) for c in calls["update"]}
+    assert updated_ids == {"101", "102"}
+    # A1 имеет бренд → характеристика OZON_BREND (property26) ушла в update
+    assert any(
+        any(k.startswith("fields[property26]") for k in c) for c in calls["update"]
+    )
 
 
 @pytest.mark.parametrize(

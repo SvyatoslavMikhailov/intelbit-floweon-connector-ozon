@@ -173,36 +173,38 @@ async def apply_to_vitrina(
 ) -> ApplyResult:
     result = ApplyResult()
 
-    main_picture_id: int | None = None
-    gallery_ids: list[int] = []
+    # Картинки: первая is_primary → DETAIL_PICTURE, остальные → MORE_PHOTO (галерея).
+    # catalog.productImage.add прикрепляет файл к товару напрямую (без disk-модуля).
+    primary_done = False
     for img in plan.images_to_upload:
         try:
             content = await download_image(img.url)
-            file_id = await vitrina.upload_file(content, img.name)
-            if img.is_primary and main_picture_id is None:
-                main_picture_id = file_id
-            else:
-                gallery_ids.append(file_id)
-            result.images_uploaded.append({"name": img.name, "file_id": file_id})
+            primary = img.is_primary and not primary_done
+            await vitrina.add_image(element_id, content, img.name, primary=primary)
+            if primary:
+                primary_done = True
+                result.primary_picture_set = True
+            result.images_uploaded.append({"name": img.name, "primary": primary})
         except Exception as exc:
             result.image_errors.append({"name": img.name, "error": str(exc)})
 
+    # DETAIL_TEXT + характеристики OZON_* одним catalog.product.update.
     detail_text = plan.new_description
-    await vitrina.update_element(
-        element_id, detail_text=detail_text, detail_picture_id=main_picture_id
+    attributes: dict[str, str] = {
+        f"{args.attribute_prefix}{slugify_property_code(name)}": value
+        for name, value in plan.new_attributes
+    }
+    unknown = await vitrina.update_product(
+        element_id, detail_text=detail_text, attributes=attributes
     )
+    if unknown:
+        logger.warning(
+            "element_id=%s: нет свойств в инфоблоке, пропущены: %s",
+            element_id,
+            ", ".join(unknown),
+        )
     result.description_updated = detail_text is not None
-    result.primary_picture_set = main_picture_id is not None
-
-    property_values: dict[str, Any] = {}
-    if gallery_ids:
-        property_values[args.gallery_property] = {str(i): fid for i, fid in enumerate(gallery_ids)}
-    for name, value in plan.new_attributes:
-        property_values[f"{args.attribute_prefix}{slugify_property_code(name)}"] = value
-
-    if property_values:
-        await vitrina.set_properties(element_id, property_values)
-        result.properties_set = len(property_values)
+    result.properties_set = len(attributes) - len(unknown)
 
     return result
 
