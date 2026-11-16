@@ -32,11 +32,13 @@ pip install intelbit-floweon-connector-ozon
 ```python
 from intelbit_floweon_connector_ozon import OzonConnector
 
-connector = OzonConnector(config={
-    "client_id": "12345",
-    "api_key": "your-api-key",
-    "webhook": {"secret": "your-webhook-secret"},  # обязателен, см. ниже
-})
+connector = OzonConnector(
+    config={
+        "client_id": "12345",
+        "api_key": "your-api-key",
+        "webhook": {"secret": "your-webhook-secret"},  # обязателен, см. ниже
+    }
+)
 # v0.0.1: методы — stubs, реализация в v0.1.0
 ```
 
